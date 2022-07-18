@@ -19,3 +19,6 @@ accounts:
 
 entrypoint:
   command: /bin/sh
+
+archs:
+  - amd64
