@@ -20,11 +20,19 @@ KAPP_VERSION=${KAPP_VERSION}
 KBLD_VERSION=${KBLD_VERSION}
 EOF
 
+kubectl_semver="${KUBECTL_VERSION//v/}"
+kubectl_semver_minor=$(echo "${kubectl_semver}" | sed -e 's/\.[0-9]*$//')
+
 apko_yaml="${here}/apko.yaml"
-yq -y -i ".environment.KUBECTL_VERSION = \"${KUBECTL_VERSION}\"" "${apko_yaml}"
-yq -y -i ".environment.KUSTOMIZE_VERSION = \"${KUSTOMIZE_VERSION}\"" "${apko_yaml}"
-yq -y -i ".environment.KAPP_VERSION = \"${KAPP_VERSION}\"" "${apko_yaml}"
-yq -y -i ".environment.KBLD_VERSION = \"${KBLD_VERSION}\"" "${apko_yaml}"
+yq -Y -i ".environment.KUBECTL_VERSION = \"${KUBECTL_VERSION}\"" "${apko_yaml}"
+yq -Y -i ".environment.KUSTOMIZE_VERSION = \"${KUSTOMIZE_VERSION}\"" "${apko_yaml}"
+yq -Y -i ".environment.KAPP_VERSION = \"${KAPP_VERSION}\"" "${apko_yaml}"
+yq -Y -i ".environment.KBLD_VERSION = \"${KBLD_VERSION}\"" "${apko_yaml}"
+
+melange_yaml="${here}/melange.yaml"
+yq -Y -i ".package.version = \"${kubectl_semver}\"" "${melange_yaml}"
+
+yq -Y -i ".jobs.build.steps[-1].with.\"additional-tags\" = \"${kubectl_semver_minor},${kubectl_semver}\"" "${here}/.github/workflows/release.yaml"
 
 tmpdir=$(mktemp -d)
 trap 'rm -rf $tmpdir' EXIT

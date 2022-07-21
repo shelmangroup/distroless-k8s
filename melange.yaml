@@ -1,32 +1,28 @@
 package:
   name: k8s-tools
-  version: 0.1.0
+  version: 1.24.3
   description: "kubernetes tools"
   target-architecture:
-  - all
-
+    - all
 environment:
   contents:
     repositories:
-    - https://dl-cdn.alpinelinux.org/alpine/edge/main
+      - https://dl-cdn.alpinelinux.org/alpine/edge/main
     packages:
-    - alpine-baselayout-data
-    - busybox
-    - ca-certificates-bundle
-    - curl
-
+      - alpine-baselayout-data
+      - busybox
+      - ca-certificates-bundle
+      - curl
 pipeline:
-- runs: |
-    ls -l
-    pwd
-    sh ./download.sh
-    ARCH=$(uname -m)
-    case $ARCH in
-      "x86_64") ARCH="amd64" ;;
-      "aarch64") ARCH="arm64" ;;
-    esac
-    install -D kubectl-${ARCH} ${{targets.destdir}}/usr/bin/kubectl
-    install -D kustomize-${ARCH} ${{targets.destdir}}/usr/bin/kustomize
-    install -D kapp-${ARCH} ${{targets.destdir}}/usr/bin/kapp
-    install -D kbld-${ARCH} ${{targets.destdir}}/usr/bin/kbld
-    install -D entrypoint.sh ${{targets.destdir}}/usr/bin/entrypoint.sh
+  - runs: |
+      sh ./download.sh
+      ARCH=$(uname -m)
+      case $ARCH in
+        "x86_64") ARCH="amd64" ;;
+        "aarch64") ARCH="arm64" ;;
+      esac
+      install -D kubectl-${ARCH} ${{targets.destdir}}/usr/bin/kubectl
+      install -D kustomize-${ARCH} ${{targets.destdir}}/usr/bin/kustomize
+      install -D kapp-${ARCH} ${{targets.destdir}}/usr/bin/kapp
+      install -D kbld-${ARCH} ${{targets.destdir}}/usr/bin/kbld
+      install -D entrypoint.sh ${{targets.destdir}}/usr/bin/entrypoint.sh

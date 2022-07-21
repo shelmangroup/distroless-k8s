@@ -4,44 +4,31 @@ on:
       - main
   schedule:
     - cron: '0 0 * * *'
-
-  # Allow manually triggered workflows by maintainers without any
-  # parameters to trigger a proactive rebuild (e.g. when a new
-  # apko lands)
   workflow_dispatch: {}
-
 name: Create Release
-
-# Don't run multiple releases concurrently.
 concurrency: release
-
 jobs:
   build:
     name: Release OCI image
     runs-on: ubuntu-latest
-
-    # https://docs.github.com/en/actions/reference/authentication-in-a-workflow
     permissions:
       id-token: write
       packages: write
       contents: read
-
     steps:
-    - uses: actions/checkout@v3
-    - uses: sigstore/cosign-installer@main
-
-    - name: Setup QEMU
-      uses: docker/setup-qemu-action@v2.0.0
-
-    - uses: chainguard-dev/actions/melange-build@main
-      with:
-        sign-with-temporary-key: true
-        config: melange.yaml
-        archs: x86_64,aarch64
-
-    - uses: distroless/actions/apko-snapshot@main
-      with:
-        config: apko.yaml
-        base-tag: ghcr.io/${{ github.repository }}
-        keyring-append: /github/workspace/melange.rsa.pub
-        archs: x86_64,aarch64
+      - uses: actions/checkout@v3
+      - uses: sigstore/cosign-installer@main
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v2.0.0
+      - uses: chainguard-dev/actions/melange-build@main
+        with:
+          sign-with-temporary-key: true
+          config: melange.yaml
+          archs: x86_64,aarch64
+      - uses: distroless/actions/apko-snapshot@main
+        with:
+          config: apko.yaml
+          base-tag: ghcr.io/${{ github.repository }}
+          keyring-append: /github/workspace/melange.rsa.pub
+          archs: x86_64,aarch64
+          additional-tags: 1.24,1.24.3
