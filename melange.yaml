@@ -29,3 +29,4 @@ pipeline:
     install -D kustomize-${ARCH} ${{targets.destdir}}/usr/bin/kustomize
     install -D kapp-${ARCH} ${{targets.destdir}}/usr/bin/kapp
     install -D kbld-${ARCH} ${{targets.destdir}}/usr/bin/kbld
+    install -D entrypoint.sh ${{targets.destdir}}/usr/bin/entrypoint.sh

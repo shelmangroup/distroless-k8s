@@ -20,6 +20,12 @@ KAPP_VERSION=${KAPP_VERSION}
 KBLD_VERSION=${KBLD_VERSION}
 EOF
 
+apko_yaml="${here}/apko.yaml"
+yq -y -i ".environment.KUBECTL_VERSION = \"${KUBECTL_VERSION}\"" "${apko_yaml}"
+yq -y -i ".environment.KUSTOMIZE_VERSION = \"${KUSTOMIZE_VERSION}\"" "${apko_yaml}"
+yq -y -i ".environment.KAPP_VERSION = \"${KAPP_VERSION}\"" "${apko_yaml}"
+yq -y -i ".environment.KBLD_VERSION = \"${KBLD_VERSION}\"" "${apko_yaml}"
+
 tmpdir=$(mktemp -d)
 trap 'rm -rf $tmpdir' EXIT
 
