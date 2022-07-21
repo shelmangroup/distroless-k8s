@@ -20,6 +20,7 @@ environment:
   KUSTOMIZE_VERSION: v4.5.5
   KAPP_VERSION: v0.49.0
   KBLD_VERSION: v0.34.0
+  HELM_VERSION: v3.9.1
 entrypoint:
   command: /usr/bin/entrypoint.sh
 archs:

@@ -21,8 +21,9 @@ pipeline:
         "x86_64") ARCH="amd64" ;;
         "aarch64") ARCH="arm64" ;;
       esac
-      install -D kubectl-${ARCH} ${{targets.destdir}}/usr/bin/kubectl
-      install -D kustomize-${ARCH} ${{targets.destdir}}/usr/bin/kustomize
+      install -D entrypoint.sh ${{targets.destdir}}/usr/bin/entrypoint.sh
+      install -D helm-${ARCH} ${{targets.destdir}}/usr/bin/helm
       install -D kapp-${ARCH} ${{targets.destdir}}/usr/bin/kapp
       install -D kbld-${ARCH} ${{targets.destdir}}/usr/bin/kbld
-      install -D entrypoint.sh ${{targets.destdir}}/usr/bin/entrypoint.sh
+      install -D kubectl-${ARCH} ${{targets.destdir}}/usr/bin/kubectl
+      install -D kustomize-${ARCH} ${{targets.destdir}}/usr/bin/kustomize

@@ -21,6 +21,18 @@ fileExistenceTests:
   permissions: '-rwxr-xr-x'
   isExecutableBy: 'group'
 commandTests:
+- name:  "helm"
+  command: "helm"
+  args: ["version"]
+  expectedOutput: ["version.BuildInfo"]
+- name:  "kapp"
+  command: "kapp"
+  args: ["version"]
+  expectedOutput: ["kapp version"]
+- name:  "kbld"
+  command: "kbld"
+  args: ["version"]
+  expectedOutput: ["kbld version"]
 - name:  "kubectl"
   command: "kubectl"
   args: ["version", "--output=json"]
@@ -30,11 +42,3 @@ commandTests:
   command: "kustomize"
   args: ["version"]
   expectedOutput: ["Version:kustomize/v"]
-- name:  "kapp"
-  command: "kapp"
-  args: ["version"]
-  expectedOutput: ["kapp version"]
-- name:  "kbld"
-  command: "kbld"
-  args: ["version"]
-  expectedOutput: ["kbld version"]

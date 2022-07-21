@@ -14,7 +14,7 @@ Tagged with the kubernetes/kubectl version to make it easy to match a given clus
 | | _| (_) |___       kustomize: v4.5.5
 | |/ /> _ </ __|      kapp: v0.49.0
 |   <| (_) \__ \      kbld: v0.34.0
-|_|\_\\___/|___/
+|_|\_\\___/|___/      helm: v3.9.1
 
 
 More info: https://github.com/shelmangroup/distroless-k8s
@@ -31,6 +31,7 @@ More info: https://github.com/shelmangroup/distroless-k8s
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [kustomize](https://github.com/kubernetes-sigs/kustomize)
+- [helm](https://helm.sh/)
 - [kapp](https://carvel.dev/kapp/)
 - [kbld](https://carvel.dev/kbld/)
 

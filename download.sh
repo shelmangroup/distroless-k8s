@@ -11,7 +11,10 @@ for arch in $ARCHS; do
     -o "kapp-${arch}" "https://github.com/vmware-tanzu/carvel-kapp/releases/download/${KAPP_VERSION}/kapp-linux-${arch}" \
     -o "kbld-${arch}" "https://github.com/vmware-tanzu/carvel-kbld/releases/download/${KBLD_VERSION}/kbld-linux-${arch}"
 
-  curl -fsL -O "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_${arch}.tar.gz"
-  tar xzf "kustomize_${KUSTOMIZE_VERSION}_linux_${arch}.tar.gz"
-  mv kustomize kustomize-${arch}
+  curl -fsL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_${arch}.tar.gz" | tar xz
+  mv kustomize "kustomize-${arch}"
+
+  curl -fsL "https://get.helm.sh/helm-${HELM_VERSION}-linux-${arch}.tar.gz" | tar xz
+  mv "linux-${arch}/helm" "helm-${arch}"
+  rm -rf "linux-${arch}"
 done
