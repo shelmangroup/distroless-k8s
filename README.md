@@ -22,6 +22,11 @@ More info: https://github.com/shelmangroup/distroless-k8s
 / $
 ```
 
+```
+% podman run --rm -it distroless-k8s-dev kustomize version
+{Version:kustomize/v4.5.5 GitCommit:daa3e5e2c2d3a4b8c94021a7384bfb06734bcd26 BuildDate:2022-05-20T20:25:40Z GoOs:linux GoArch:amd64}
+```
+
 ## Installed tools
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
