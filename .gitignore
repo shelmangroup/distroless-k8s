@@ -4,3 +4,6 @@
 /packages
 /sbom-x86_64.cdx
 /sbom-x86_64.spdx.json
+/workspace
+*.rsa
+*.rsa.pub

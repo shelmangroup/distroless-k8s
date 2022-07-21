@@ -37,11 +37,11 @@ jobs:
       with:
         sign-with-temporary-key: true
         config: melange.yaml
-        archs: x86_64
+        archs: x86_64,aarch64
 
     - uses: distroless/actions/apko-snapshot@main
       with:
         config: apko.yaml
         base-tag: ghcr.io/${{ github.repository }}
         keyring-append: /github/workspace/melange.rsa.pub
-        archs: x86_64
+        archs: x86_64,aarch64

@@ -3,7 +3,7 @@ package:
   version: 0.1.0
   description: "kubernetes tools"
   target-architecture:
-  - x86_64
+  - all
 
 environment:
   contents:
@@ -13,32 +13,19 @@ environment:
     - alpine-baselayout-data
     - busybox
     - ca-certificates-bundle
+    - curl
 
 pipeline:
-- uses: fetch 
-  with:
-    uri: https://dl.k8s.io/release/v1.24.0/bin/linux/amd64/kubectl
-    expected-sha256: 94d686bb6772f6fb59e3a32beff908ab406b79acdfb2427abdc4ac3ce1bb98d7
-    extract: false
-- runs: install -D kubectl ${{targets.destdir}}/usr/bin/kubectl
-
-- uses: fetch 
-  with:
-    uri: https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.5.4/kustomize_v4.5.4_linux_amd64.tar.gz
-    expected-sha256: 1159c5c17c964257123b10e7d8864e9fe7f9a580d4124a388e746e4003added3
-    strip-components: 0
-- runs: install -D kustomize ${{targets.destdir}}/usr/bin/kustomize
-
-- uses: fetch 
-  with:
-    uri: https://github.com/vmware-tanzu/carvel-kapp/releases/download/v0.49.0/kapp-linux-amd64
-    expected-sha256: dec5040d90478fdf0af3c1548d46f9ded642f156245bba83fe99171c8461e4f7
-    extract: false
-- runs: install -D kapp-linux-amd64 ${{targets.destdir}}/usr/bin/kapp
-
-- uses: fetch 
-  with:
-    uri: https://github.com/vmware-tanzu/carvel-kbld/releases/download/v0.34.0/kbld-linux-amd64
-    expected-sha256: 67c86ece94a3747b2e011a5b72044b69f2594ca807621b1e1e4c805f6abcaeef
-    extract: false
-- runs: install -D kbld-linux-amd64 ${{targets.destdir}}/usr/bin/kbld
+- runs: |
+    ls -l
+    pwd
+    sh ./download.sh
+    ARCH=$(uname -m)
+    case $ARCH in
+      "x86_64") ARCH="amd64" ;;
+      "aarch64") ARCH="arm64" ;;
+    esac
+    install -D kubectl-${ARCH} ${{targets.destdir}}/usr/bin/kubectl
+    install -D kustomize-${ARCH} ${{targets.destdir}}/usr/bin/kustomize
+    install -D kapp-${ARCH} ${{targets.destdir}}/usr/bin/kapp
+    install -D kbld-${ARCH} ${{targets.destdir}}/usr/bin/kbld

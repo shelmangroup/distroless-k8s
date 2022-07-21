@@ -9,7 +9,9 @@ _melange() {
 test -f melange.rsa || _melange keygen
 
 # Build package
-_melange build melange.yaml --arch $(uname -m) -k melange.rsa
+_melange build melange.yaml --arch arm64 -k melange.rsa
+
+exit 0
 
 # Generate repo index
 podman run --rm -it -v $(pwd):/w -w /w/packages -v $(pwd)/packages:/w/packages \
@@ -29,7 +31,7 @@ podman run --rm -it \
     -v $(pwd)/packages:/github/workspace/packages \
     ghcr.io/distroless/apko build --debug apko.yaml \
     test output.tar -k melange.rsa.pub \
-    --build-arch $(uname -m)
+    --build-arch arm64
 
 # Load image
 podman load -i output.tar

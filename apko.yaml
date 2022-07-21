@@ -3,10 +3,10 @@ contents:
     - https://dl-cdn.alpinelinux.org/alpine/edge/main
     - "@local /github/workspace/packages"
   packages:
-    - ca-certificates-bundle
     - alpine-baselayout-data
-    - k8s-tools@local
     - busybox
+    - ca-certificates-bundle
+    - k8s-tools@local
 
 accounts:
   groups:
