@@ -24,7 +24,7 @@ commandTests:
 - name:  "kubectl"
   command: "kubectl"
   args: ["version", "--output=json"]
-  # exitCode: 1
+  exitCode: 1
   expectedOutput: ["clientVersion"]
 - name:  "kustomize"
   command: "kustomize"
