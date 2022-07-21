@@ -8,14 +8,20 @@ environment:
   contents:
     repositories:
       - https://dl-cdn.alpinelinux.org/alpine/edge/main
+      - https://dl-cdn.alpinelinux.org/alpine/edge/community
     packages:
       - alpine-baselayout-data
+      - binutils
+      - binutils-aarch64-none-elf
       - busybox
       - ca-certificates-bundle
       - curl
 pipeline:
   - runs: ./download.sh
   - runs: sha256sum -c DIGESTS
+  - runs: |
+      strip *-amd64
+      aarch64-none-elf-strip *-arm64
   - runs: |
       ARCH=$(uname -m)
       case $ARCH in
