@@ -28,9 +28,9 @@ jobs:
       - uses: distroless/actions/apko-snapshot@main
         with:
           config: apko.yaml
-          base-tag: ghcr.io/${{ github.repository }}:test
+          target-tag: test
           keyring-append: /github/workspace/melange.rsa.pub
-          archs: x86_64
+          archs: x86_64,aarch64
       - name: run structure tests
         uses: plexsystems/container-structure-test-action@v0.1.0
         with:
