@@ -14,8 +14,9 @@ environment:
       - ca-certificates-bundle
       - curl
 pipeline:
+  - runs: ./download.sh
+  - runs: sha256sum -c DIGESTS
   - runs: |
-      sh ./download.sh
       ARCH=$(uname -m)
       case $ARCH in
         "x86_64") ARCH="amd64" ;;
