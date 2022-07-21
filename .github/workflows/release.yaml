@@ -25,16 +25,18 @@ jobs:
           sign-with-temporary-key: true
           config: melange.yaml
           archs: x86_64,aarch64
-      - uses: distroless/actions/apko-snapshot@main
+      - uses: distroless/actions/apko-build@main
         with:
           config: apko.yaml
-          target-tag: test
+          tag: distroless-k8s-test
           keyring-append: /github/workspace/melange.rsa.pub
-          archs: x86_64,aarch64
+          archs: x86_64
+      - name: load test image
+        run: docker load -i output.tar
       - name: run structure tests
         uses: plexsystems/container-structure-test-action@v0.1.0
         with:
-          image: ghcr.io/${{ github.repository }}:test
+          image: distroless-k8s-test
           config: tests.yaml
       - uses: distroless/actions/apko-snapshot@main
         with:
