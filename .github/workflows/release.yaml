@@ -20,16 +20,26 @@ jobs:
       - uses: sigstore/cosign-installer@main
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2.0.0
-      - uses: chainguard-dev/actions/melange-build@main
+      - run: |
+          echo "$SIGNING_KEY" >${{ github.workspace }}/melange.rsa
+          echo "$SIGNING_KEY_PUB" >${{ github.workspace }}/melange.rsa.pub
+        env:
+          SIGNING_KEY: ${{ secrets.MELANGE_SIGNING_KEY }}
+          SIGNING_KEY_PUB: ${{ secrets.MELANGE_SIGNING_KEY_PUB }}
+      - uses: chainguard-dev/actions/setup-melange@main
+      - uses: chainguard-dev/actions/melange-build-pkg@main
         with:
-          sign-with-temporary-key: true
           config: melange.yaml
           archs: x86_64,aarch64
+          sign-with-key: true
+          signing-key-path: ${{ github.workspace }}/melange.rsa
+          keyring-append: ${{ github.workspace }}/melange.rsa.pub
+          update-index: true
       - uses: distroless/actions/apko-build@main
         with:
           config: apko.yaml
           tag: distroless-k8s-test
-          keyring-append: /github/workspace/melange.rsa.pub
+          keyring-append: ${{ github.workspace }}/melange.rsa.pub
           archs: x86_64
       - name: load test image
         run: docker load -i output.tar
@@ -42,6 +52,6 @@ jobs:
         with:
           config: apko.yaml
           base-tag: ghcr.io/${{ github.repository }}
-          keyring-append: /github/workspace/melange.rsa.pub
+          keyring-append: ${{ github.workspace }}/melange.rsa.pub
           archs: x86_64,aarch64
           additional-tags: 1.24,1.24.3
