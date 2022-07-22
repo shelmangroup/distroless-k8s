@@ -12,28 +12,29 @@ KUSTOMIZE_VERSION=$(basename "${kustomize_release}")
 
 here=$(dirname "$(readlink -f "$0")")
 
+KUBECTL_SEMVER="${KUBECTL_VERSION//v/}"
+KUBECTL_SEMVER_MINOR=$(echo "${KUBECTL_SEMVER}" | sed -e 's/\.[0-9]*$//')
+
 cat >"${here}/VERSIONS" <<EOF
 HELM_VERSION=${HELM_VERSION}
 KAPP_VERSION=${KAPP_VERSION}
 KBLD_VERSION=${KBLD_VERSION}
+KUBECTL_SEMVER=${KUBECTL_SEMVER}
+KUBECTL_SEMVER_MINOR=${KUBECTL_SEMVER_MINOR}
 KUBECTL_VERSION=${KUBECTL_VERSION}
 KUSTOMIZE_VERSION=${KUSTOMIZE_VERSION}
 EOF
 
-kubectl_semver="${KUBECTL_VERSION//v/}"
-kubectl_semver_minor=$(echo "${kubectl_semver}" | sed -e 's/\.[0-9]*$//')
-
-apko_yaml="${here}/apko.yaml"
-yq -Y -i ".environment.HELM_VERSION = \"${HELM_VERSION}\"" "${apko_yaml}"
-yq -Y -i ".environment.KAPP_VERSION = \"${KAPP_VERSION}\"" "${apko_yaml}"
-yq -Y -i ".environment.KBLD_VERSION = \"${KBLD_VERSION}\"" "${apko_yaml}"
-yq -Y -i ".environment.KUBECTL_VERSION = \"${KUBECTL_VERSION}\"" "${apko_yaml}"
-yq -Y -i ".environment.KUSTOMIZE_VERSION = \"${KUSTOMIZE_VERSION}\"" "${apko_yaml}"
+## FIXME: leaving these out until https://github.com/chainguard-dev/apko/issues/301 is fixed
+# apko_yaml="${here}/apko.yaml"
+# yq -Y -i ".environment.HELM_VERSION = \"${HELM_VERSION}\"" "${apko_yaml}"
+# yq -Y -i ".environment.KAPP_VERSION = \"${KAPP_VERSION}\"" "${apko_yaml}"
+# yq -Y -i ".environment.KBLD_VERSION = \"${KBLD_VERSION}\"" "${apko_yaml}"
+# yq -Y -i ".environment.KUBECTL_VERSION = \"${KUBECTL_VERSION}\"" "${apko_yaml}"
+# yq -Y -i ".environment.KUSTOMIZE_VERSION = \"${KUSTOMIZE_VERSION}\"" "${apko_yaml}"
 
 melange_yaml="${here}/melange.yaml"
-yq -Y -i ".package.version = \"${kubectl_semver}\"" "${melange_yaml}"
-
-yq -Y -i ".jobs.build.steps[-1].with.\"additional-tags\" = \"${kubectl_semver_minor},${kubectl_semver}\"" "${here}/.github/workflows/release.yaml"
+yq -Y -i ".package.version = \"${KUBECTL_SEMVER}\"" "${melange_yaml}"
 
 tmpdir=$(mktemp -d)
 trap 'rm -rf $tmpdir' EXIT
