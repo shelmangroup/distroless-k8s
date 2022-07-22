@@ -18,15 +18,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: sigstore/cosign-installer@main
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v2.0.0
+        with:
+          cosign-release: v1.9.0
+      - uses: docker/setup-qemu-action@v2.0.0
+      - uses: imjasonh/setup-crane@v0.1
+      - uses: chainguard-dev/actions/setup-melange@main
       - run: |
           echo "$SIGNING_KEY" >${{ github.workspace }}/melange.rsa
           echo "$SIGNING_KEY_PUB" >${{ github.workspace }}/melange.rsa.pub
         env:
           SIGNING_KEY: ${{ secrets.MELANGE_SIGNING_KEY }}
           SIGNING_KEY_PUB: ${{ secrets.MELANGE_SIGNING_KEY_PUB }}
-      - uses: chainguard-dev/actions/setup-melange@main
       - uses: chainguard-dev/actions/melange-build-pkg@main
         with:
           config: melange.yaml
@@ -39,7 +41,7 @@ jobs:
         with:
           config: apko.yaml
           tag: distroless-k8s-test
-          keyring-append: ${{ github.workspace }}/melange.rsa.pub
+          keyring-append: melange.rsa.pub
           archs: x86_64
       - name: load test image
         run: docker load -i output.tar
@@ -48,10 +50,43 @@ jobs:
         with:
           image: distroless-k8s-test
           config: tests.yaml
-      - uses: distroless/actions/apko-snapshot@main
+      - uses: distroless/actions/apko-publish@main
+        id: apko
         with:
           config: apko.yaml
-          base-tag: ghcr.io/${{ github.repository }}
-          keyring-append: ${{ github.workspace }}/melange.rsa.pub
+          tag: ghcr.io/${{ github.repository }}:latest
+          image-refs: apko.images
+          keyring-append: melange.rsa.pub
+          source-date-epoch: '0'
           archs: x86_64,aarch64
-          additional-tags: 1.24,1.24.3
+
+      - uses: docker/login-action@bb984efc561711aaa26e433c32c3521176eae55b # v1.13.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ github.token }}
+
+      - name: Sign image
+        shell: bash
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+        run: |
+          . ./VERSIONS
+          cosign sign ${{ steps.apko.outputs.digest }} \
+              -a "sha=${{ github.sha }}" \
+              -a "run_id=${{ github.run_id }}" \
+              -a "run_attempt=${{ github.run_attempt }}" \
+              -a "helm_version=${HELM_VERSION}" \
+              -a "kapp_version=${KAPP_VERSION}" \
+              -a "kbld_version=${KBLD_VERSION}" \
+              -a "kubectl_version=${KUBECTL_VERSION}" \
+              -a "kustomize_version=${KUSTOMIZE_VERSION}"
+
+      #     # additional-tags: 1.24,1.24.3
+      # - shell: bash
+      #   run: |
+      #     crane cp ${{ steps.apko.outputs.digest }} ${{ inputs.base-tag }}:${{ inputs.target-tag }}
+      #     for tag in $(echo ${{ inputs.additional-tags }} | sed "s/,/ /g")
+      #     do
+      #       crane cp ${{ steps.apko.outputs.digest }} ${{ inputs.base-tag }}:$tag
+      #     done
