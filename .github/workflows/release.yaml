@@ -84,11 +84,8 @@ jobs:
               -a "kubectl_version=${KUBECTL_VERSION}" \
               -a "kustomize_version=${KUSTOMIZE_VERSION}"
 
-      #     # additional-tags: 1.24,1.24.3
-      # - shell: bash
-      #   run: |
-      #     crane cp ${{ steps.apko.outputs.digest }} ${{ inputs.base-tag }}:${{ inputs.target-tag }}
-      #     for tag in $(echo ${{ inputs.additional-tags }} | sed "s/,/ /g")
-      #     do
-      #       crane cp ${{ steps.apko.outputs.digest }} ${{ inputs.base-tag }}:$tag
-      #     done
+      - shell: bash
+        run: |
+          . ./VERSIONS
+          crane cp ${{ steps.apko.outputs.digest }} "ghcr.io/${{ github.repository }}:${KUBECTL_SEMVER}"
+          crane cp ${{ steps.apko.outputs.digest }} "ghcr.io/${{ github.repository }}:${KUBECTL_SEMVER_MINOR}"
