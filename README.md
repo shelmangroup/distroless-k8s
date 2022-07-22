@@ -1,10 +1,13 @@
 # Kubernetes Tools
 
-Reproducible images with kubectl, kustomize and some other useful tools for automated deployment.
+Reproducible images with kubectl, kustomize, helm and some other useful tools for automated deployment scenarios.
 
-Made with [apko](https://github.com/chainguard-dev/apko).
+Made with [apko](https://github.com/chainguard-dev/apko), [melange](https://github.com/chainguard-dev/melange) and :sparkling_heart:.
 
-Tagged with the kubernetes/kubectl version to make it easy to match a given cluster.
+The images are published to GitHub Container registry at `ghcr.io/shelmangroup/distroless-k8s`.
+
+Images are tagged with the kubernetes/kubectl version to make it easy to match a given cluster:
+
 
 ## Example:
 ```
