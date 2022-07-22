@@ -29,6 +29,23 @@ jobs:
         env:
           SIGNING_KEY: ${{ secrets.MELANGE_SIGNING_KEY }}
           SIGNING_KEY_PUB: ${{ secrets.MELANGE_SIGNING_KEY_PUB }}
+      - name: Download binaries
+        run: ./download.sh
+      - name: Verify sha256 checksums
+        run: sha256sum -c DIGESTS
+      - name: Strip binaries
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -qy binutils-aarch64-linux-gnu
+          strip *-amd64
+          aarch64-linux-gnu-strip *-arm64
+      - name: Compress binaries with UPX
+        run: |
+          curl -fsL -o /tmp/upx.txz https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz
+          echo "ac75f5172c1c530d1b5ce7215ca9e94586c07b675a26af3b97f8421b8b8d413d  /tmp/upx.txz" | sha256sum -c -
+          tar -C /tmp -xJf /tmp/upx.txz
+          chmod +x *-amd64 *-arm64
+          echo *-amd64 *-arm64 | xargs -n1 -P0 /tmp/upx-3.96-amd64_linux/upx -q -9
       - uses: chainguard-dev/actions/melange-build-pkg@main
         with:
           config: melange.yaml

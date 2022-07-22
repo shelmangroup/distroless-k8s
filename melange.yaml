@@ -16,8 +16,6 @@ environment:
       - ca-certificates-bundle
       - curl
 pipeline:
-  - runs: ./download.sh
-  - runs: sha256sum -c DIGESTS
   - runs: |
       ARCH=$(uname -m)
       case $ARCH in
@@ -30,4 +28,3 @@ pipeline:
       install -D kbld-${ARCH} ${{targets.destdir}}/usr/bin/kbld
       install -D kubectl-${ARCH} ${{targets.destdir}}/usr/bin/kubectl
       install -D kustomize-${ARCH} ${{targets.destdir}}/usr/bin/kustomize
-  - runs: cd ${{targets.destdir}}/usr/bin && strip helm kapp kbld kubectl kustomize

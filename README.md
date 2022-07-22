@@ -4,6 +4,8 @@ Reproducible images with kubectl, kustomize, helm and some other useful tools fo
 
 Made with [apko](https://github.com/chainguard-dev/apko), [melange](https://github.com/chainguard-dev/melange) and :sparkling_heart:.
 
+The static binaries are stripped and compressed with [UPX](https://upx.github.io/) to reduce the size of the image (from ~160MiB to ~50MiB). Often, only one or two of the tools are needed in a use case, so optimizing for a smaller download makes sense, the tradeoff being a short decompression time when running a tool.
+
 The images are published to GitHub Container registry at `ghcr.io/shelmangroup/distroless-k8s`.
 
 Images are tagged with the kubernetes/kubectl version to make it easy to match a given cluster:

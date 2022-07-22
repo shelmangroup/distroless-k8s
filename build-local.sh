@@ -9,6 +9,10 @@ _melange() {
   podman run --rm -it --privileged -v $(pwd):/github/workspace -w /github/workspace ghcr.io/distroless/melange "$@"
 }
 
+# Get binaries
+./download.sh
+sha256sum -c DIGESTS
+
 # Generate temporary key
 test -f melange.rsa || _melange keygen
 
