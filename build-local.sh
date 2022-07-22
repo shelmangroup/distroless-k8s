@@ -32,6 +32,7 @@ podman run --rm -it \
     -v "$(pwd):/github/workspace" \
     -v "$(pwd)/packages:/github/workspace/packages" \
     -w /github/workspace \
+    -e SOURCE_DATE_EPOCH=0 \
     ghcr.io/distroless/apko build --debug apko.yaml \
       distroless-k8s-dev output.tar -k melange.rsa.pub \
       --build-arch "$ARCH"

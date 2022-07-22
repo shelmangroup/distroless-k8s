@@ -43,19 +43,21 @@ jobs:
           tag: distroless-k8s-test
           keyring-append: melange.rsa.pub
           archs: x86_64
-      - name: load test image
+
+      - name: load image for testing
         run: docker load -i output.tar
       - name: run structure tests
         uses: plexsystems/container-structure-test-action@v0.1.0
         with:
           image: distroless-k8s-test
           config: tests.yaml
+
       - uses: distroless/actions/apko-publish@main
         id: apko
         with:
           config: apko.yaml
           tag: ghcr.io/${{ github.repository }}:latest
-          image-refs: apko.images
+          image_refs: apko.images
           keyring-append: melange.rsa.pub
           source-date-epoch: '0'
           archs: x86_64,aarch64

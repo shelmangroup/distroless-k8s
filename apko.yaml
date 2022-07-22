@@ -15,12 +15,13 @@ accounts:
     - username: nonroot
       uid: 65532
   run-as: 65532
-environment:
-  KUBECTL_VERSION: v1.24.3
-  KUSTOMIZE_VERSION: v4.5.5
-  KAPP_VERSION: v0.49.0
-  KBLD_VERSION: v0.34.0
-  HELM_VERSION: v3.9.1
+## FIXME: leaving these out until https://github.com/chainguard-dev/apko/issues/301 is fixed
+# environment:
+#   KUBECTL_VERSION: v1.24.3
+#   KUSTOMIZE_VERSION: v4.5.5
+#   KAPP_VERSION: v0.49.0
+#   KBLD_VERSION: v0.34.0
+#   HELM_VERSION: v3.9.1
 entrypoint:
   command: /usr/bin/entrypoint.sh
 archs:
