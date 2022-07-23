@@ -2,6 +2,12 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - LICENSE
+      - README.md
+      - build-local.sh
+      - update-versions.sh
+
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch: {}
@@ -17,11 +23,15 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v3
+
       - uses: sigstore/cosign-installer@main
         with:
           cosign-release: v1.9.0
+
       - uses: docker/setup-qemu-action@v2.0.0
+
       - uses: imjasonh/setup-crane@v0.1
+
       - uses: chainguard-dev/actions/setup-melange@main
       - run: |
           echo "$SIGNING_KEY" >${{ github.workspace }}/melange.rsa
@@ -29,16 +39,20 @@ jobs:
         env:
           SIGNING_KEY: ${{ secrets.MELANGE_SIGNING_KEY }}
           SIGNING_KEY_PUB: ${{ secrets.MELANGE_SIGNING_KEY_PUB }}
+
       - name: Download binaries
         run: ./download.sh
+
       - name: Verify sha256 checksums
         run: sha256sum -c DIGESTS
+
       - name: Strip binaries
         run: |
           sudo apt-get update -q
           sudo apt-get install -qy binutils-aarch64-linux-gnu
           strip *-amd64
           aarch64-linux-gnu-strip *-arm64
+
       - name: Compress binaries with UPX
         run: |
           curl -fsL -o /tmp/upx.txz https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz
