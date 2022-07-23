@@ -1,17 +1,21 @@
-# Kubernetes Tools
+[![Build Status](https://github.com/shelmangroup/distroless-k8s/actions/workflows/release.yaml/badge.svg)](https://github.com/shelmangroup/distroless-k8s/actions/workflows/release.yaml)
 
-Reproducible images with kubectl, kustomize, helm and some other useful tools for automated deployment scenarios.
+# distroless-k8s: A minimal Kubernetes tools container
 
+`ghcr.io/shelmangroup/distroless-k8s` is a CI/CD optimized container image for working with Kubernetes. 
 Made with [apko](https://github.com/chainguard-dev/apko), [melange](https://github.com/chainguard-dev/melange) and :sparkling_heart:.
 
-The static binaries are stripped and compressed with [UPX](https://upx.github.io/) to reduce the size of the image (from ~160MiB to ~50MiB). Often, only one or two of the tools are needed in a use case, so optimizing for a smaller download makes sense, the tradeoff being a short decompression time when running a tool.
+Automatically built, reproducible, images with kubectl, kustomize, helm and a few other commonly used tools.
+This project puts emphasis on automatic regular updates, security, and keeping the image size as small as possible.
 
-The images are published to GitHub Container registry at `ghcr.io/shelmangroup/distroless-k8s`.
+The images are currently built for `amd64` and `arm64` architectures. If you'd like to see other architectures supported, [please submit an issue](https://github.com/shelmangroup/distroless-k8s/issues/new).
 
-Images are tagged with the kubernetes/kubectl version to make it easy to match a given cluster:
+## Usage
 
+The images are published to GitHub Container Registry at `ghcr.io/shelmangroup/distroless-k8s`.
+They are also tagged with the kubernetes/kubectl full and minor version to make it easy to match a given cluster for compatibility.
 
-## Example:
+### Example:
 ```
 % podman run --rm -it ghcr.io/shelmangroup/distroless-k8s:1.24
  _     ___
@@ -40,3 +44,6 @@ More info: https://github.com/shelmangroup/distroless-k8s
 - [kapp](https://carvel.dev/kapp/)
 - [kbld](https://carvel.dev/kbld/)
 
+## Image size
+
+The tool binaries are stripped and compressed with [UPX](https://upx.github.io/) to reduce the size of the image (from ~160MiB to ~50MiB). Often, only one or two of the tools are needed in a use case so optimizing for a smaller download makes sense, the tradeoff being a short decompression time when running a tool.
