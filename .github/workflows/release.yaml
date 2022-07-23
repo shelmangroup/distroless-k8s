@@ -78,7 +78,7 @@ jobs:
       - name: load image for testing
         run: docker load -i output.tar
       - name: run structure tests
-        uses: plexsystems/container-structure-test-action@v0.1.0
+        uses: plexsystems/container-structure-test-action@v0.2.0
         with:
           image: distroless-k8s-test
           config: tests.yaml
