@@ -93,7 +93,7 @@ jobs:
           source-date-epoch: '0'
           archs: x86_64,aarch64
 
-      - uses: docker/login-action@bb984efc561711aaa26e433c32c3521176eae55b # v1.13.0
+      - uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b # v1.13.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
