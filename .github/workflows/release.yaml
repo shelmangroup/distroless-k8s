@@ -28,7 +28,7 @@ jobs:
         with:
           cosign-release: v1.9.0
 
-      - uses: docker/setup-qemu-action@v2.0.0
+      - uses: docker/setup-qemu-action@v2.1.0
 
       - uses: imjasonh/setup-crane@v0.2
 
