@@ -26,7 +26,7 @@ jobs:
 
       - uses: sigstore/cosign-installer@main
         with:
-          cosign-release: v1.9.0
+          cosign-release: v1.13.0
 
       - uses: docker/setup-qemu-action@v2.0.0
 
@@ -68,7 +68,7 @@ jobs:
           signing-key-path: ${{ github.workspace }}/melange.rsa
           keyring-append: ${{ github.workspace }}/melange.rsa.pub
           update-index: true
-      - uses: distroless/actions/apko-build@main
+      - uses: chainguard-images/actions/apko-build@main
         with:
           config: apko.yaml
           tag: distroless-k8s-test
@@ -83,7 +83,7 @@ jobs:
           image: distroless-k8s-test
           config: tests.yaml
 
-      - uses: distroless/actions/apko-publish@main
+      - uses: chainguard-images/actions/apko-publish@main
         id: apko
         with:
           config: apko.yaml
