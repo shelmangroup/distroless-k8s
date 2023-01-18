@@ -1,6 +1,6 @@
 package:
   name: k8s-tools
-  version: 1.25.3
+  version: 1.26.0
   description: "kubernetes tools"
   target-architecture:
     - all
