@@ -26,7 +26,7 @@ jobs:
 
       - uses: sigstore/cosign-installer@main
         with:
-          cosign-release: v1.13.0
+          cosign-release: v1.13.1
 
       - uses: docker/setup-qemu-action@v2.1.0
 
@@ -55,11 +55,11 @@ jobs:
 
       - name: Compress binaries with UPX
         run: |
-          curl -fsL -o /tmp/upx.txz https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz
-          echo "ac75f5172c1c530d1b5ce7215ca9e94586c07b675a26af3b97f8421b8b8d413d  /tmp/upx.txz" | sha256sum -c -
+          curl -fsL -o /tmp/upx.txz https://github.com/upx/upx/releases/download/v4.0.1/upx-4.0.1-amd64_linux.tar.xz
+          echo "3fb999c3ab2b5c169911267768eebed584ce90d16c1baec30dc9c6632db2cc00 /tmp/upx.txz" | sha256sum -c -
           tar -C /tmp -xJf /tmp/upx.txz
           chmod +x *-amd64 *-arm64
-          echo *-amd64 *-arm64 | xargs -n1 -P0 /tmp/upx-3.96-amd64_linux/upx -q -9
+          echo *-amd64 *-arm64 | xargs -n1 -P0 /tmp/upx-4.0.1-amd64_linux/upx -q -9
       - uses: chainguard-dev/actions/melange-build-pkg@main
         with:
           config: melange.yaml
@@ -93,7 +93,7 @@ jobs:
           source-date-epoch: '0'
           archs: x86_64,aarch64
 
-      - uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # v1.13.0
+      - uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
