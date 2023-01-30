@@ -2,8 +2,8 @@
 set -eu -o pipefail
 
 HELM_VERSION=$(curl -fsL https://api.github.com/repos/helm/helm/releases/latest | jq -r '.tag_name')
-KAPP_VERSION=$(curl -fsL https://api.github.com/repos/vmware-tanzu/carvel-kapp/releases/latest | jq -r '.tag_name')
-KBLD_VERSION=$(curl -fsL https://api.github.com/repos/vmware-tanzu/carvel-kbld/releases/latest | jq -r '.tag_name')
+KAPP_VERSION=$(curl -fsL https://api.github.com/repos/carvel-dev/kapp/releases/latest | jq -r '.tag_name')
+KBLD_VERSION=$(curl -fsL https://api.github.com/repos/carvel-dev/kbld/releases/latest | jq -r '.tag_name')
 KUBECTL_VERSION=$(curl -fsL https://dl.k8s.io/release/stable.txt)
 
 kustomize_release=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases | /usr/bin/jq -r '.[].tag_name | select(contains("kustomize"))' |
