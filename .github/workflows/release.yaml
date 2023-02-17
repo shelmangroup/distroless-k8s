@@ -30,7 +30,7 @@ jobs:
 
       - uses: docker/setup-qemu-action@v2.1.0
 
-      - uses: imjasonh/setup-crane@v0.2
+      - uses: imjasonh/setup-crane@v0.3
 
       - uses: chainguard-dev/actions/setup-melange@main
       - run: |
