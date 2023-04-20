@@ -9,7 +9,7 @@ on:
       - update-versions.sh
 
   schedule:
-    - cron: '0 0 * * 0'
+    - cron: "0 0 * * 0"
   workflow_dispatch: {}
 name: Create Release
 concurrency: release
@@ -60,6 +60,7 @@ jobs:
           tar -C /tmp -xJf /tmp/upx.txz
           chmod +x *-amd64 *-arm64
           echo *-amd64 *-arm64 | xargs -n1 -P0 /tmp/upx-4.0.1-amd64_linux/upx -q -9
+
       - uses: chainguard-dev/actions/melange-build-pkg@main
         with:
           config: melange.yaml
@@ -68,6 +69,7 @@ jobs:
           signing-key-path: ${{ github.workspace }}/melange.rsa
           keyring-append: ${{ github.workspace }}/melange.rsa.pub
           update-index: true
+
       - uses: chainguard-images/actions/apko-build@main
         with:
           config: apko.yaml
@@ -77,10 +79,11 @@ jobs:
 
       - name: load image for testing
         run: docker load -i output.tar
+
       - name: run structure tests
         uses: plexsystems/container-structure-test-action@v0.3.0
         with:
-          image: distroless-k8s-test
+          image: distroless-k8s-test:latest-amd64
           config: tests.yaml
 
       - uses: chainguard-images/actions/apko-publish@main
@@ -90,7 +93,7 @@ jobs:
           tag: ghcr.io/${{ github.repository }}:latest
           image_refs: apko.images
           keyring-append: melange.rsa.pub
-          source-date-epoch: '0'
+          source-date-epoch: "0"
           archs: x86_64,aarch64
 
       - uses: docker/login-action@v2
