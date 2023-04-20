@@ -1,44 +1,44 @@
 schemaVersion: 2.0.0
 fileExistenceTests:
-- name: 'kubectl'
-  path: '/usr/bin/kubectl'
-  shouldExist: true
-  permissions: '-rwxr-xr-x'
-  isExecutableBy: 'group'
-- name: 'kustomize'
-  path: '/usr/bin/kustomize'
-  shouldExist: true
-  permissions: '-rwxr-xr-x'
-  isExecutableBy: 'group'
-- name: 'kapp'
-  path: '/usr/bin/kapp'
-  shouldExist: true
-  permissions: '-rwxr-xr-x'
-  isExecutableBy: 'group'
-- name: 'kbld'
-  path: '/usr/bin/kbld'
-  shouldExist: true
-  permissions: '-rwxr-xr-x'
-  isExecutableBy: 'group'
+  - name: "kubectl"
+    path: "/usr/bin/kubectl"
+    shouldExist: true
+    permissions: "-rwxr-xr-x"
+    isExecutableBy: "group"
+  - name: "kustomize"
+    path: "/usr/bin/kustomize"
+    shouldExist: true
+    permissions: "-rwxr-xr-x"
+    isExecutableBy: "group"
+  - name: "kapp"
+    path: "/usr/bin/kapp"
+    shouldExist: true
+    permissions: "-rwxr-xr-x"
+    isExecutableBy: "group"
+  - name: "kbld"
+    path: "/usr/bin/kbld"
+    shouldExist: true
+    permissions: "-rwxr-xr-x"
+    isExecutableBy: "group"
 commandTests:
-- name:  "helm"
-  command: "helm"
-  args: ["version"]
-  expectedOutput: ["version.BuildInfo"]
-- name:  "kapp"
-  command: "kapp"
-  args: ["version"]
-  expectedOutput: ["kapp version"]
-- name:  "kbld"
-  command: "kbld"
-  args: ["version"]
-  expectedOutput: ["kbld version"]
-- name:  "kubectl"
-  command: "kubectl"
-  args: ["version", "--output=json"]
-  exitCode: 1
-  expectedOutput: ["clientVersion"]
-- name:  "kustomize"
-  command: "kustomize"
-  args: ["version"]
-  expectedOutput: ["Version:kustomize/v"]
+  - name: "helm"
+    command: "helm"
+    args: ["version"]
+    expectedOutput: ["version.BuildInfo"]
+  - name: "kapp"
+    command: "kapp"
+    args: ["version"]
+    expectedOutput: ["kapp version"]
+  - name: "kbld"
+    command: "kbld"
+    args: ["version"]
+    expectedOutput: ["kbld version"]
+  - name: "kubectl"
+    command: "kubectl"
+    args: ["version", "--output=json"]
+    exitCode: 1
+    expectedOutput: ["clientVersion"]
+  - name: "kustomize"
+    command: "kustomize"
+    args: ["version", "-o", "yaml"]
+    expectedOutput: ["version:", "gitCommit:"]
