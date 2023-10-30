@@ -16,11 +16,11 @@ accounts:
       uid: 65532
   run-as: 65532
 environment:
-  KUBECTL_VERSION: v1.27.1
-  KUSTOMIZE_VERSION: v5.0.1
-  KAPP_VERSION: v0.55.0
-  KBLD_VERSION: v0.37.0
-  HELM_VERSION: v3.11.3
+  KUBECTL_VERSION: v1.28.3
+  KUSTOMIZE_VERSION: v5.2.1
+  KAPP_VERSION: v0.59.1
+  KBLD_VERSION: v0.38.0
+  HELM_VERSION: v3.13.1
 entrypoint:
   command: /usr/bin/entrypoint.sh
 archs:
